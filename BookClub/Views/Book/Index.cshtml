@@ -28,15 +28,11 @@
                         <form>
                             @if (!books.IsRead)
                             {
-                                @*<input type="button" asp-for="@books.IsRead" asp-route-id="@books.Id" class="btn btn-primary" value="Прочитано">*@
                                 <button asp-controller="Book" asp-action="MarkAsRead" asp-route-id="@books.Id" class="btn btn-primary">Прочитано</button>
-
                             }
                             else
                             {
-                                @*<input type="button" asp-for="@books.IsRead" asp-route-id="@books.Id" class="btn btn-primary" value="Убрать из прочитанного">*@
                                 <button asp-controller="Book" asp-action="MarkAsUnread" asp-route-id="@books.Id" class="btn btn-secondary">Убрать из прочитанного</button>
-
                             }
                         </form>
                     </td>

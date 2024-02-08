@@ -1,6 +1,7 @@
 ﻿using BookClub.Data;
 using BookClub.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BookClub.Controllers
 {
@@ -35,13 +36,20 @@ namespace BookClub.Controllers
         public IActionResult MarkAsUnread(int? id)
         {
             var book = _database.Books.FirstOrDefault(x => x.Id == id);
-            if (book != null )
+            if (book != null)
             {
                 book.IsRead = false;
                 _database.SaveChanges();
                 return RedirectToAction("Index");
             }
             return NotFound();
+        }
+
+        public IActionResult GetReadBooks()
+        {
+            var readBooks = _database.Books.Where(x => x.IsRead).ToList();
+
+            return View(readBooks);
         }
     }
 }

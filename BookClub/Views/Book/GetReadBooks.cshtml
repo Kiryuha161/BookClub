@@ -1,0 +1,42 @@
+﻿@model List<Book>
+
+<div class="text-center mt-5">
+    <h2 class="mb-5">Список книг</h2>
+    @if (Model.Count != 0)
+    {
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Название</th>
+                    <th>Изображение</th>
+                    <th>Автор</th>
+                    <th>Описание</th>
+                    <th>Статус</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var books in Model)
+                {
+                    <tr>
+                        <td>@books.Id</td>
+                        <td>@books.Title</td>
+                        <td><img src="@books.ImageUrl" style="width: 100%; height: 100%;" /></td>
+                        <td>@books.Author</td>
+                        <td>@books.Description</td>
+                        <td>@books.IsReadDisplay</td>
+                        <td>
+                            <form>
+                                <button asp-controller="Book" asp-action="MarkAsUnread" asp-route-id="@books.Id" class="btn btn-secondary">Убрать из прочитанного</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    } else
+    {
+        <p>Нет прочитанных книг</p>
+    }
+</div>
