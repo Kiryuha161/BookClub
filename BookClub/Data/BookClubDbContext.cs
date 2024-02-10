@@ -7,6 +7,9 @@ namespace BookClub.Data
     {
         public BookClubDbContext(DbContextOptions<BookClubDbContext> options) : base(options) { }
 
+        public DbSet<Book> Books { get; set; }
+        public DbSet<Login> Logins { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Book>().HasData(
@@ -102,7 +105,5 @@ namespace BookClub.Data
                 }
             );
         }
-
-        public DbSet<Book> Books { get; set; }
     }
 }
