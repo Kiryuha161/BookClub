@@ -15,6 +15,7 @@ namespace BookClub.Controllers
 
         public IActionResult Index()
         {
+            ViewData["HttpContext"] = HttpContext;
             return View();
         }
 

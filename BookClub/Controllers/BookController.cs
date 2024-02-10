@@ -21,9 +21,9 @@ namespace BookClub.Controllers
             return View(books);
         }
 
-        public IActionResult MarkAsRead(int? id)
+        public IActionResult MarkAsRead(int? bookId)
         {
-            var book = _database.Books.FirstOrDefault(x => x.Id == id);
+            var book = _database.Books.FirstOrDefault(x => x.Id == bookId);
             if (book != null)
             {
                 book.IsRead = true;
@@ -33,9 +33,9 @@ namespace BookClub.Controllers
             return NotFound();
         }
 
-        public IActionResult MarkAsUnread(int? id)
+        public IActionResult MarkAsUnread(int? bookId)
         {
-            var book = _database.Books.FirstOrDefault(x => x.Id == id);
+            var book = _database.Books.FirstOrDefault(x => x.Id == bookId);
             if (book != null)
             {
                 book.IsRead = false;

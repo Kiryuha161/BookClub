@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@*@model Login*@
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,7 +24,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
                         </li>
-                        @if (!string.IsNullOrEmpty(ViewContext.HttpContext.Session.GetString("Username")))
+                        @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Index">Список всех книг</a>
@@ -32,6 +34,7 @@
                             </li>
                         }
                     </ul>
+                    <p>@User.Identity.Name</p>
                 </div>
             </div>
         </nav>

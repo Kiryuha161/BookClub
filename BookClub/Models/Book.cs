@@ -17,7 +17,7 @@ namespace BookClub.Models
         [Display(Name = "Статус прочтения")]
         public bool IsRead { get; set; }
         public string ImageUrl { get; set; }
-
+   
         [Display(Name = "Прочитано", AutoGenerateField = false)]
         public string IsReadDisplay
         {

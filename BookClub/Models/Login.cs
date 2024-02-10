@@ -9,5 +9,6 @@ namespace BookClub.Models
         public int Id { get; set; }
         [Display(Name="Логин")]
         public string Name { get; set; }
+
     }
 } 

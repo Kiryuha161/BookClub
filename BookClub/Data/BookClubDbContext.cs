@@ -1,17 +1,26 @@
 ﻿using BookClub.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookClub.Data
 {
-    public class BookClubDbContext : DbContext
+    public class BookClubDbContext : IdentityDbContext
     {
         public BookClubDbContext(DbContextOptions<BookClubDbContext> options) : base(options) { }
 
         public DbSet<Book> Books { get; set; }
         public DbSet<Login> Logins { get; set; }
 
+        public DbSet<UserReadBook> UserReadBooks { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(p => new { p.LoginProvider, p.ProviderKey });
+
             modelBuilder.Entity<Book>().HasData(
                 new Book()
                 {
