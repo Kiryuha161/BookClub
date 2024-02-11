@@ -25,16 +25,18 @@
                     <td>@books.Description</td>
                     <td>@books.IsReadDisplay</td>
                     <td>
-                        <form>
-                            @if (!books.IsRead)
-                            {
-                                <button asp-controller="Book" asp-action="MarkAsRead" asp-route-id="@books.Id" class="btn btn-primary">Прочитано</button>
-                            }
-                            else
-                            {
-                                <button asp-controller="Book" asp-action="MarkAsUnread" asp-route-id="@books.Id" class="btn btn-secondary">Убрать из прочитанного</button>
-                            }
-                        </form>
+                        @if (!books.IsRead)
+                        {
+                            <form asp-controller="Book" asp-action="MarkBookAsRead" asp-route-bookId="@books.Id" method="post">
+                                <button type="submit" class="btn btn-primary">Прочитано</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="Book" asp-action="MarkBookAsUnread" asp-route-bookId="@books.Id" method="post">
+                                <button type="submit" class="btn btn-secondary">Убрать из прочитанного</button>
+                            </form>
+                        }
                     </td>
                 </tr>
             }

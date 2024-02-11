@@ -10,5 +10,7 @@ namespace BookClub.Models
         [Display(Name="Логин")]
         public string Name { get; set; }
 
+        public bool IsAuth { get; set; }
+
     }
 } 

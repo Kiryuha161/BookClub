@@ -2,6 +2,7 @@
 using BookClub.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Security.Claims;
 
 namespace BookClub.Controllers
 {
@@ -17,32 +18,64 @@ namespace BookClub.Controllers
         public IActionResult Index()
         {
             List<Book> books = _database.Books.ToList();
+            ViewData["HttpContextUser"] = HttpContext.Session.GetString("UserId");
 
             return View(books);
         }
 
-        public IActionResult MarkAsRead(int? bookId)
+        [HttpPost]
+        public async Task<IActionResult> MarkBookAsRead(int bookId)
         {
-            var book = _database.Books.FirstOrDefault(x => x.Id == bookId);
-            if (book != null)
+            var userName = User.Identity.Name;
+            var user = _database.Logins.FirstOrDefault(l => l.Name == userName);
+
+            if (user != null)
             {
-                book.IsRead = true;
+                var userId = user.Id; 
+
+                var userReadBook = new UserReadBook
+                {
+                    UserId = userId,
+                    BookId = bookId,
+                    IsRead = true
+                };
+
+                _database.UserReadBooks.Add(userReadBook);
                 _database.SaveChanges();
-                return RedirectToAction("Index");
+
+                return RedirectToAction("Index", "Book");
             }
-            return NotFound();
+            else
+            {
+                return NotFound();
+            }
         }
 
-        public IActionResult MarkAsUnread(int? bookId)
+        [HttpPost]
+        public async Task<IActionResult> MarkBookAsUnread(int bookId)
         {
-            var book = _database.Books.FirstOrDefault(x => x.Id == bookId);
-            if (book != null)
+            var userName = User.Identity.Name;
+            var user = _database.Logins.FirstOrDefault(u => u.Name == userName);
+
+            if (user != null)
             {
-                book.IsRead = false;
-                _database.SaveChanges();
+                var userId = user.Id;
+
+                var userReadBook = _database.UserReadBooks.FirstOrDefault(ub => ub.UserId == userId && ub.BookId == bookId);
+
+                if (userReadBook != null)
+                {
+                    userReadBook.IsRead = false;
+                    _database.UserReadBooks.Update(userReadBook);
+                    _database.SaveChanges();
+                }
+                
                 return RedirectToAction("Index");
             }
-            return NotFound();
+            else
+            {
+                return NotFound();
+            }
         }
 
         public IActionResult GetReadBooks()

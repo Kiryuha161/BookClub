@@ -39,7 +39,8 @@ namespace BookClub.Controllers
                 {
                     var newUser = new Login
                     {
-                        Name = model.Name
+                        Name = model.Name,
+                        IsAuth = true
                     };
 
                     _database.Logins.Add(newUser);
@@ -50,7 +51,7 @@ namespace BookClub.Controllers
                     await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, claimsPrincipal);
 
                     HttpContext.User = claimsPrincipal;
-                    HttpContext.Session.SetString("Username", newUser.Name);
+                    HttpContext.Session.SetString("UserId", newUser.Id.ToString());
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -60,7 +61,12 @@ namespace BookClub.Controllers
                 var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(existingUser);
 
                 await HttpContext.SignInAsync(claimsPrincipal);
-                bool resultIsAuthenticated = HttpContext.User.Identity.IsAuthenticated;
+
+                Login login = _database.Logins.FirstOrDefault(x => x.Name == model.Name);
+                if (login != null)
+                {
+                    login.IsAuth = true;
+                }
 
                 return RedirectToAction("Index", "Home");
             }
@@ -72,6 +78,12 @@ namespace BookClub.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+
+            Login login = _database.Logins.FirstOrDefault(x => x.Name == User.Identity.Name);
+            if (login != null)
+            {
+                login.IsAuth = false;
+            }
 
             return RedirectToAction("Index", "Home");
         }
